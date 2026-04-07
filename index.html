@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Mercado Pago Demo</title>
+    <link rel="apple-touch-icon" href="https://via.placeholder.com/180x180/0000FF/FFFFFF?text=MP+Demo">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div id="app-container">
+    <div id="spinner-overlay">
+        <div class="spinner"></div>
+    </div>
+
+    <div id="screen-home" class="screen active">
+        <div class="mobile-container page-transition">
+            <!-- Yellow header + status -->
+            <div class="header-yellow pb-3">
+                <div class="status-bar flex" style="display:flex; justify-content:space-between; align-items:center; padding:8px 16px 0;">
+                    <div style="font-weight:600;">9:18</div>
+                    <div style="display:flex; gap:8px; align-items:center;">
+                        <div style="width:18px; height:12px; background:transparent; display:inline-block;"></div>
+                        <div style="background:white20; padding:4px 8px; border-radius:8px;">
+                        </div>
+                    </div>
+                </div>
+
+                <div style="display:flex; align-items:center; justify-content:space-between; padding:12px 16px;">
+                    <h1 style="font-size:20px; font-weight:700; color:#111827;">Hola, Enzo</h1>
+                    <div style="display:flex; gap:8px; align-items:center;">
+                        <button class="btn-press" aria-label="search" style="background:rgba(255,255,255,0.8); border-radius:12px; width:40px; height:40px; display:flex; align-items:center; justify-content:center;">🔍</button>
+                        <button class="btn-press" aria-label="notifications" style="background:rgba(255,255,255,0.8); border-radius:12px; width:40px; height:40px; display:flex; align-items:center; justify-content:center; position:relative;">🔔<span style="position:absolute; top:-6px; right:-6px; background:#ef4444; color:white; font-size:11px; width:20px; height:20px; display:flex; align-items:center; justify-content:center; border-radius:999px;">20</span></button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Balance card -->
+            <div class="balance-card">
+                <div class="tabs">
+                    <button class="active">Pesos</button>
+                    <button>Dólares</button>
+                    <button>Reservas</button>
+                </div>
+                <div class="balance-body">
+                    <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+                        <div>
+                            <div class="balance-amount">
+                                <span class="big">$ 422.767</span>
+                                <span class="cents">,64</span>
+                                <button class="btn-press eye" style="background:transparent; border:none; margin-left:8px;">👁️</button>
+                            </div>
+                            <p style="color:#16a34a; margin-top:8px;">Los últimos 12 meses rindió <strong>$ 125.896,96</strong></p>
+                        </div>
+                        <div style="align-self:flex-end;">
+                            <button style="background:transparent; border:none; font-size:20px;">›</button>
+                        </div>
+                    </div>
+
+                    <div class="quick-actions">
+                        <button onclick="void(0)" class="btn-press">
+                            <div class="icon">📥</div>
+                            <div style="color:var(--mp-blue); font-weight:600;">Ingresar</div>
+                        </button>
+                        <button onclick="startTransferFlow()" class="btn-press">
+                            <div class="icon">➡️</div>
+                            <div style="color:var(--mp-blue); font-weight:600;">Transferir</div>
+                        </button>
+                        <button onclick="void(0)" class="btn-press">
+                            <div class="icon">👤</div>
+                            <div style="color:var(--mp-blue); font-weight:600;">Tus alias</div>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Credits -->
+            <div class="section">
+                <h2>Créditos</h2>
+                <button class="link" style="border:none; background:none;">Consultar →</button>
+
+                <div class="credits-card">
+                    <div>
+                        <p style="color:#6b7280;">Préstamo Personal para usar</p>
+                        <p style="color:#6b7280;">como quieras</p>
+                        <p style="font-weight:700; margin-top:6px;">$ 167.996</p>
+                    </div>
+                    <button class="btn-press" style="background:var(--mp-blue); color:white; padding:8px 14px; border-radius:999px; border:none;">Simular</button>
+                </div>
+            </div>
+
+            <!-- Benefits -->
+            <div class="section">
+                <h2>Beneficios</h2>
+                <button class="link" style="border:none; background:none;">Conocer todos →</button>
+
+                <div class="benefits-scroll" aria-hidden="false">
+                    <div class="benefit">
+                        <div class="img"></div>
+                        <p style="font-weight:600; color:white;">Festival de cuotas ¡Hasta 24 sin interés!</p>
+                    </div>
+
+                    <div class="benefit" style="background:#eef2ff; display:flex; flex-direction:column; align-items:center; justify-content:center;">
+                        <div style="width:40px; height:40px; background:white; border-radius:8px; display:flex; align-items:center; justify-content:center; margin-bottom:8px;">QR</div>
+                        <p style="color:#6b7280; font-size:12px;">Viajá con QR</p>
+                        <p style="font-weight:700;">100% OFF</p>
+                    </div>
+
+                    <div class="benefit" style="background:#eef2ff; display:flex; flex-direction:column; align-items:center; justify-content:center;">
+                        <div style="width:40px; height:40px; background:#6b46c1; border-radius:999px; display:flex; align-items:center; justify-content:center; margin-bottom:8px; color:white; font-weight:700;">D</div>
+                        <p style="color:#6b7280; font-size:12px;">Despegar</p>
+                        <p style="font-weight:700;">15% OFF</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bottom nav placeholder (fixed) -->
+            <div class="bottom-nav">
+                <div class="inner">
+                    <button><div style="font-size:18px;">🏦</div><div style="font-size:12px; color:#4f46e5;">Cuenta</div></button>
+                    <button><div style="font-size:18px;">💳</div><div style="font-size:12px; color:#6b7280;">Tarjetas</div></button>
+                    <button style="transform:translateY(-8px); width:60px; height:60px; border-radius:999px; background:var(--mp-blue); display:flex; align-items:center; justify-content:center; box-shadow:0 8px 20px rgba(79,70,229,0.18);">🔲</button>
+                    <button><div style="font-size:18px;">💸</div><div style="font-size:12px; color:#6b7280;">Pagos</div></button>
+                    <button><div style="font-size:18px;">☰</div><div style="font-size:12px; color:#6b7280;">Más</div></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="screen-contacts" class="screen">
+        <div class="mobile-container">
+        <div class="header">
+            <div class="header-left"><button class="btn-back" onclick="goHome()">←</button></div>
+            <div class="header-center"><div class="header-title">Transferir</div></div>
+            <div class="header-right"><button class="btn-icon">⚙️</button><button class="btn-icon">❓</button></div>
+        </div>
+        <input type="text" placeholder="Alias, CBU/CVU, celular o nombre" style="width: 80vw; margin: 5vw auto; padding: 3vw; border-radius: 10px; border: 1px solid #ccc;">
+        <div class="contact-list">
+            <div class="label">Sugeridos</div>
+            <div class="contact-item" onclick="selectRecipient('Zaira Abril Mudry', 'ZA', 'NaviMudry43')">
+                <div class="avatar" style="background-color: #6C5CE7">ZA</div>
+                <div class="contact-info">
+                    <div class="contact-name">Zaira Abril Mudry</div>
+                    <div class="contact-detail">NaviMudry43</div>
+                </div>
+            </div>
+            <div class="contact-item">
+                <div class="avatar" style="background-color: #FAB1A0">PE</div>
+                <div class="contact-info">
+                    <div class="contact-name">Pena Enzo Ezequ</div>
+                </div>
+            </div>
+        </div>
+        </div>
+    </div>
+
+    <div id="screen-amount" class="screen">
+        <div class="mobile-container">
+        <div class="header">
+            <div class="header-left"><button class="btn-back" onclick="goToContacts()">←</button></div>
+            <div class="header-center"><div class="header-title">Ingresá el monto</div></div>
+        </div>
+        <div class="payment-recipient-card" style="justify-content: space-around; border: none; background-color: white; margin: 3vw var(--body-padding); box-shadow: 0 2px 4px rgba(0,0,0,0.05); padding: 3vw;">
+            <div class="avatar" style="background-color: #6C5CE7; width: 8vw; height: 8vw; font-size: 3vw;">ZA</div>
+            <div style="flex: 1; margin-left: 2vw">
+                <div class="contact-name" style="font-size: 3.5vw">Zaira Abril Mudry</div>
+                <div class="contact-detail" style="font-size: 2.5vw">Alias: NaviMudry43</div>
+            </div>
+            <div class="contact-detail" style="color: var(--primary-blue)">Motivo: Varios →</div>
+        </div>
+        
+        <div class="amount" id="display-amount">$ <span id="amount-value">0</span></div>
+        <div class="amount-available">Dinero disponible: $ <span id="available-balance-value">422.967,64</span></div>
+        <div class="quick-amounts">
+            <button class="quick-amount-btn" onclick="setQuickAmount(500)">$ 500</button>
+            <button class="quick-amount-btn" onclick="setQuickAmount(5000)">$ 5.000</button>
+            <button class="quick-amount-btn" onclick="setQuickAmount(20000)">$ 20.000</button>
+        </div>
+        <button id="btn-amount-continue" class="btn-blue btn-disabled" onclick="goToPaymentMethod()">Continuar</button>
+        </div>
+    </div>
+
+    <div id="screen-payment-method" class="screen payment-method-screen">
+        <div class="mobile-container">
+        <div class="header">
+            <div class="header-left"><button class="btn-back" onclick="goToAmount()">←</button></div>
+            <div class="header-center"><div class="header-title">Cómo querés transferir</div></div>
+        </div>
+        
+        <div class="payment-recipient-card">
+            <div class="avatar" style="background-color: #6C5CE7; font-size: 5vw; ">ZA</div>
+            <div class="contact-info">
+                <div class="contact-name">Zaira Abril Mudry</div>
+                <div class="contact-detail">Mercado Pago</div>
+            </div>
+        </div>
+
+        <div style="font-weight: 700; font-size: 8vw; text-align: right; padding: 0 var(--body-padding); margin-bottom: 5vw">Total $ <span class="current-amount-value">200</span></div>
+
+        <div class="payment-method-card">
+            <div style="display: flex; justify-content: space-between; align-items: center">
+                <div class="label">Dinero disponible: $ <span id="payment-available-value">422.967,64</span></div>
+                <div style="color: var(--success-green); font-weight: 500">Sin costo</div>
+            </div>
+            <img src="https://via.placeholder.com/350x200/2C3A4F/FFFFFF?text=Tarjeta+Mercado+Pago" alt="Tarjeta MP" style="width: 100%; border-radius: 15px; margin-top: 3vw;">
+            <div style="color: var(--success-green); text-align: center; margin-top: 1vw">Sin comisión</div>
+        </div>
+        <button class="btn-blue" onclick="confirmPayment()">Transferir</button>
+        </div>
+    </div>
+
+    <div id="screen-success" class="screen">
+        <div class="mobile-container">
+        <div class="success-checkmark">✓</div>
+        <div class="success-title">Transferiste $ <span class="current-amount-value">200</span></div>
+        <div class="success-subtitle">a Zaira Abril Mudry</div>
+        
+        <div class="success-ad">
+            <img src="https://via.placeholder.com/80x80/2C3A4F/FFFFFF?text=Bloodborne" alt="Ad Game" class="success-ad-img">
+            <div class="success-ad-info">
+                <div class="success-ad-title">Cmon Bloodborne The Board G...</div>
+                <div class="success-ad-price">$ 215.454<sup>34</sup></div>
+            </div>
+            <div class="contact-detail">Ad</div>
+        </div>
+        
+        <div class="success-btns">
+            <button class="btn-blue" style="background-color: white; color: var(--primary-blue); border: 1px solid #ccc; font-weight: 500">Compartir comprobante</button>
+            <button class="btn-blue" style="font-weight: 500;" onclick="resetApp()">Hacer otra transferencia</button>
+        </div>
+        </div>
+    </div>
+</div>
+
+<script src="app.js"></script>
+
+</body>
+</html>

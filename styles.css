@@ -1,0 +1,220 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+:root {
+  --mp-yellow: #FFE600;
+  --mp-yellow-dark: #EDDC00;
+  --mp-blue: #4F46E5;
+  --mp-blue-light: #5C6BC0;
+  --mp-green: #00A650;
+  --mp-green-light: #39B54A;
+  --mp-dark: #1A1A2E;
+  --mp-gray: #8B8B8B;
+  --mp-gray-light: #F5F5F5;
+  --mp-border: #E5E5E5;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background-color: #f5f5f5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Mobile container */
+.mobile-container {
+  max-width: 430px;
+  margin: 0 auto;
+  min-height: 100vh;
+  background: white;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* Smooth transitions */
+.page-transition {
+  animation: slideIn 0.28s ease-out;
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateX(12px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes slideUp { from { opacity: 0; transform: translateY(12px);} to {opacity:1; transform:none;} }
+@keyframes fadeIn { from {opacity:0} to {opacity:1} }
+@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes scaleIn { from { opacity: 0; transform: scale(.9) } to { opacity:1; transform:scale(1) } }
+
+.animate-slide-up { animation: slideUp 0.35s ease-out; }
+.animate-fade-in { animation: fadeIn 0.25s ease-out; }
+.animate-scale-in { animation: scaleIn 0.32s ease-out; }
+
+.spinner { width:48px; height:48px; border:3px solid transparent; border-top-color:var(--mp-blue); border-radius:50%; animation:spin 1s linear infinite; }
+
+/* Button effects */
+.btn-press:active { transform: scale(0.98); opacity: 0.95; }
+
+.card-interactive { transition: all .18s ease; }
+.card-interactive:active { transform: scale(.99); }
+
+/* Status bar simulation */
+.status-bar { height:47px; padding:12px 20px 0; }
+
+/* Safe area for bottom navigation */
+.safe-bottom { padding-bottom: env(safe-area-inset-bottom, 20px); }
+
+/* Screen visibility control (used by app.js) */
+.screen { display: none; position: relative; min-height: 100vh; }
+.screen.active { display: block; }
+
+/* Spinner overlay (hidden by default). pointer-events disabled when hidden so it doesn't block clicks */
+#spinner-overlay {
+  position: fixed;
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255,255,255,0.9);
+  z-index: 1000;
+  pointer-events: none;
+}
+
+#spinner-overlay.active { display: flex; pointer-events: auto; }
+
+/* Header yellow */
+.header-yellow { background: var(--mp-yellow); }
+
+.balance-card { margin: 0 16px; margin-top: -6px; background: white; border-radius: 16px; box-shadow: 0 8px 20px rgba(6,10,24,0.06); border:1px solid var(--mp-border); overflow:hidden; }
+.tabs { display:flex; border-bottom:1px solid var(--mp-border); }
+.tabs button { flex:1; padding:14px 12px; background:transparent; border:none; font-weight:600; color:#6b7280; }
+.tabs button.active { color: #111827; border-bottom:2px solid #111827; }
+
+.balance-body { padding:18px; }
+.balance-amount { display:flex; align-items:baseline; gap:8px; }
+.balance-amount .big { font-size:32px; font-weight:800; color:#111827; }
+.balance-amount .cents { font-size:18px; font-weight:700; }
+.balance-amount .eye { margin-left:6px; }
+.quick-actions { display:flex; gap:12px; margin-top:18px; }
+.quick-actions button { flex:1; display:flex; flex-direction:column; align-items:center; padding:14px; background:#F0F4FF; border-radius:12px; border:none; }
+.quick-actions .icon { width:40px; height:40px; background:white; display:flex; align-items:center; justify-content:center; border-radius:8px; margin-bottom:8px; }
+
+.section { padding:16px; }
+.section h2 { font-size:18px; font-weight:700; color:#111827; }
+.section .link { color:var(--mp-blue); font-weight:600; margin-top:6px; display:inline-block; }
+
+.credits-card { margin-top:12px; padding:14px; background:white; border-radius:12px; display:flex; justify-content:space-between; align-items:center; border:1px solid var(--mp-border); }
+
+.benefits-scroll { display:flex; gap:12px; overflow-x:auto; padding:12px 16px; }
+.benefit { min-width:140px; border-radius:12px; overflow:hidden; background:#f3f4f6; padding:12px; }
+.benefit .img { height:112px; background:#111827; border-radius:10px; margin-bottom:8px; }
+
+/* Bottom nav */
+.bottom-nav { position:fixed; bottom:0; left:0; right:0; background:white; border-top:1px solid var(--mp-border); z-index:50; }
+.bottom-nav .inner { max-width:430px; margin:0 auto; display:flex; align-items:center; justify-content:space-around; padding:10px 8px; }
+.bottom-nav button { background:none; border:none; display:flex; flex-direction:column; align-items:center; gap:4px; }
+
+/* responsive tweaks */
+@media (max-width:420px) {
+  .balance-amount .big { font-size:28px; }
+  .balance-body { padding:14px; }
+}
+
+/* Contacts screen styles (restore list layout) */
+#screen-contacts {
+  background: #fff;
+  min-height: 100vh;
+}
+
+#screen-contacts .header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  background: var(--mp-yellow);
+  border-bottom: 1px solid var(--mp-border);
+}
+
+#screen-contacts .header-left, #screen-contacts .header-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+#screen-contacts .header-center { flex: 1; text-align: center; }
+
+#screen-contacts .header-title { font-weight: 700; color: #111827; }
+
+#screen-contacts .contact-list { padding: 12px 16px; }
+
+#screen-contacts .label { font-weight: 600; color: #111827; margin-bottom: 8px; }
+
+#screen-contacts .contact-item {
+  display: flex;
+  align-items: center;
+  padding: 10px 8px;
+  border-radius: 8px;
+  margin-bottom: 8px;
+  border: 1px solid transparent;
+  transition: background .12s ease, border-color .12s ease;
+}
+
+#screen-contacts .contact-item:hover { background: #f8fafc; border-color: var(--mp-border); }
+
+#screen-contacts .avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  color: #fff;
+  margin-right: 12px;
+  flex-shrink: 0;
+}
+
+#screen-contacts .contact-info { flex: 1; }
+
+#screen-contacts .contact-name { font-weight: 600; color: #111827; }
+#screen-contacts .contact-detail { color: #6b7280; font-size: 14px; }
+
+/* Transfer / Amount / Payment styles */
+.payment-recipient-card { border:1px solid var(--mp-border); border-radius:12px; padding:12px; display:flex; align-items:center; gap:12px; background:white; margin: 16px; }
+.payment-recipient-card .avatar { width:56px; height:56px; border-radius:50%; display:flex; align-items:center; justify-content:center; color:white; font-weight:700; flex-shrink:0; }
+.amount { font-size:48px; font-weight:700; text-align:center; margin: 24px 0; }
+.amount-available { text-align:center; color:#6b7280; margin-bottom:16px; }
+.quick-amounts { display:flex; justify-content:center; gap:12px; padding: 0 16px; margin-bottom:16px; }
+.quick-amount-btn { background:white; border:1px solid #ddd; padding:8px 12px; border-radius:12px; cursor:pointer; font-weight:600; }
+.btn-blue { background: var(--mp-blue); color: white; border: none; padding: 12px 16px; border-radius: 12px; font-weight:700; cursor:pointer; width: calc(100% - 32px); max-width: 430px; margin: 0 auto 12px; display:block; }
+.btn-disabled { opacity: 0.5; pointer-events: none; }
+
+/* Success screen placement for action buttons */
+#screen-success { background: #fff; min-height: 100vh; padding-bottom: 80px; }
+#screen-success .success-checkmark { width: 80px; height: 80px; font-size: 36px; margin: 28px auto 12px; display:flex; align-items:center; justify-content:center; border-radius:50%; background:#E6FBF0; color:var(--mp-green); }
+#screen-success .success-title { text-align:center; font-size:20px; font-weight:700; margin-top:12px; }
+#screen-success .success-subtitle { text-align:center; color:#6b7280; margin-bottom:18px; }
+#screen-success .success-ad { margin: 12px 16px; }
+
+#screen-success .success-btns {
+  position: fixed;
+  bottom: calc(5vw + env(safe-area-inset-bottom, 16px));
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 430px;
+  padding: 0 16px;
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  z-index: 200;
+}
+
+#screen-success .success-btns .btn-blue { flex: 1; }
+
+
