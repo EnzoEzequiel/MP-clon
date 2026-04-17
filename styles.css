@@ -26,6 +26,17 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* App-like touch behavior for standalone usage */
+body {
+  touch-action: pan-x pan-y;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  /* If you want to prevent page bounce completely, uncomment the next line.
+     Be careful: it will disable native scrolling for the whole page. */
+  /* overflow: hidden; */
+}
+
 /* Mobile container */
 .mobile-container {
   max-width: 430px;
