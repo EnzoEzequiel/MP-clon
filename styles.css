@@ -103,6 +103,20 @@ body {
 .quick-actions { display:flex; gap:12px; margin-top:18px; }
 .quick-actions button { flex:1; display:flex; flex-direction:column; align-items:center; padding:14px; background:#F0F4FF; border-radius:12px; border:none; }
 .quick-actions .icon { width:40px; height:40px; background:white; display:flex; align-items:center; justify-content:center; border-radius:8px; margin-bottom:8px; }
+.quick-actions .icon img { width:22px; height:22px; }
+
+/* Icon button sizing */
+.icon-btn img { width:18px; height:18px; }
+.icon img { display:block; }
+
+/* Bottom nav icon sizing */
+.bottom-nav img { width:22px; height:22px; margin-bottom:4px; }
+
+.qr-main { width:60px; height:60px; border-radius:50%; display:flex; align-items:center; justify-content:center; }
+.qr-main img { width:28px; height:28px; filter: invert(1); }
+
+/* Notification badge */
+.badge { position:absolute; top:-6px; right:-6px; background:#ef4444; color:#fff; font-size:11px; width:20px; height:20px; display:flex; align-items:center; justify-content:center; border-radius:50%; }
 
 .section { padding:16px; }
 .section h2 { font-size:18px; font-weight:700; color:#111827; }
