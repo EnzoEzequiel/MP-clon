@@ -159,17 +159,62 @@
         </div>
         <div class="contact-list">
             <div class="label">Sugeridos</div>
-            <div class="contact-item" onclick="selectRecipient('Zaira Abril Mudry', 'ZA', 'NaviMudry43')">
-                <div class="avatar" style="background-color: #6C5CE7">ZA</div>
+            <div class="contact-item" onclick="selectRecipient('Jose Leonardo Caballero', 'JC', 'leonardo1270')">
+                <div class="avatar avatar--white">JC</div>
                 <div class="contact-info">
-                    <div class="contact-name">Zaira Abril Mudry</div>
-                    <div class="contact-detail">NaviMudry43</div>
+                    <div class="contact-name">Jose Leonardo Caballero</div>
+                    <div class="contact-detail">leonardo1270 <span class="bank-icons"><img src="assets/icons/bank1.svg" alt="b1"></span></div>
                 </div>
             </div>
-            <div class="contact-item">
-                <div class="avatar" style="background-color: #FAB1A0">PE</div>
+
+            <div class="contact-item" onclick="selectRecipient('Armando Edgardo Romero', 'AR', 'sivori32')">
+                <div class="avatar avatar--white">AR</div>
                 <div class="contact-info">
-                    <div class="contact-name">Pena Enzo Ezequ</div>
+                    <div class="contact-name">Armando Edgardo Romero</div>
+                    <div class="contact-detail">sivori32 <span class="bank-icons"><img src="assets/icons/bank2.svg" alt="b2"></span></div>
+                </div>
+            </div>
+
+            <div style="height:12px"></div>
+            <div class="label">Recientes</div>
+
+            <div class="contact-item">
+                <div class="avatar avatar--white">PE</div>
+                <div class="contact-info">
+                    <div class="contact-name">Pena Enzo Ezequ <span class="tag-vos">Vos</span></div>
+                    <div class="contact-detail">Tu cuenta <span class="bank-icons"><img src="assets/icons/bank1.svg" alt="b1"></span></div>
+                </div>
+            </div>
+
+            <div class="contact-item" onclick="selectRecipient('Zaira Abril Mudry', 'ZA', 'NaviMudry43')">
+                <div class="avatar" style="background-color:#6C5CE7; color:white">ZA</div>
+                <div class="contact-info">
+                    <div class="contact-name">Zaira Abril Mudry</div>
+                    <div class="contact-detail">NaviMudry43 <span class="bank-icons"><img src="assets/icons/bank2.svg" alt="b2"></span></div>
+                </div>
+            </div>
+
+            <div class="contact-item">
+                <div class="avatar avatar--white">EZ</div>
+                <div class="contact-info">
+                    <div class="contact-name">Elvira Zulema, villagra</div>
+                    <div class="contact-detail"><span class="bank-icons"><img src="assets/icons/bank1.svg" alt="b1"></span></div>
+                </div>
+            </div>
+
+            <div class="contact-item">
+                <div class="avatar avatar--white">VA</div>
+                <div class="contact-info">
+                    <div class="contact-name">Victor Ariel Alvarez Almiron</div>
+                    <div class="contact-detail">&nbsp;</div>
+                </div>
+            </div>
+
+            <div class="contact-item">
+                <div class="avatar avatar--white">SA</div>
+                <div class="contact-info">
+                    <div class="contact-name">Soledad Adorno</div>
+                    <div class="contact-detail"><span class="bank-icons"><img src="assets/icons/bank2.svg" alt="b2"></span></div>
                 </div>
             </div>
         </div>
@@ -182,11 +227,11 @@
             <div class="header-left"><button class="btn-back" onclick="goToContacts()"><img src="assets/icons/back.svg" alt="Atrás"></button></div>
             <div class="header-center"><div class="header-title">Ingresá el monto</div></div>
         </div>
-        <div class="payment-recipient-card" style="justify-content: space-around; border: none; background-color: white; margin: 3vw var(--body-padding); box-shadow: 0 2px 4px rgba(0,0,0,0.05); padding: 3vw;">
-            <div class="avatar" style="background-color: #6C5CE7; width: 8vw; height: 8vw; font-size: 3vw;">ZA</div>
+        <div class="payment-recipient-card" style="justify-content: space-around; border: none; background-color: white; margin: 3vw var(--body-padding); padding: 3vw;">
+            <div class="avatar avatar--white" style="width: 8vw; height: 8vw; font-size: 3vw;">JC</div>
             <div style="flex: 1; margin-left: 2vw">
-                <div class="contact-name" style="font-size: 3.5vw">Zaira Abril Mudry</div>
-                <div class="contact-detail" style="font-size: 2.5vw">Alias: NaviMudry43</div>
+                <div class="contact-name" style="font-size: 3.5vw">Jose Leonardo Caballero</div>
+                <div class="contact-detail" style="font-size: 2.5vw">Alias: leonardo1270</div>
             </div>
             <div class="contact-detail" style="color: var(--primary-blue)">Motivo: Varios →</div>
         </div>
@@ -210,14 +255,14 @@
         </div>
         
         <div class="payment-recipient-card">
-            <div class="avatar" style="background-color: #6C5CE7; font-size: 5vw; ">ZA</div>
+            <div class="avatar avatar--white" style="font-size: 5vw; ">JC</div>
             <div class="contact-info">
-                <div class="contact-name">Zaira Abril Mudry</div>
-                <div class="contact-detail">Mercado Pago</div>
+                <div class="contact-name">Jose Leonardo Caballero</div>
+                <div class="contact-detail">Cuenta</div>
             </div>
         </div>
 
-        <div class="total-display">
+        <div class="total-display total-row">
             <div class="total-label">Total</div>
             <div class="total-amount">$ <span class="current-amount-value">200</span></div>
         </div>
@@ -276,15 +321,15 @@
         <div class="mobile-container">
         <div class="success-checkmark">✓</div>
         <div class="success-title">Transferiste $ <span class="current-amount-value">200</span></div>
-        <div class="success-subtitle">a Zaira Abril Mudry</div>
-        
+        <div class="success-subtitle">a Jose Leonardo Caballero</div>
+
         <div class="success-ad">
-            <img src="https://via.placeholder.com/80x80/2C3A4F/FFFFFF?text=Bloodborne" alt="Ad Game" class="success-ad-img">
+            <img src="assets/icons/card-illustration.svg" alt="Ad Game" class="success-ad-img">
             <div class="success-ad-info">
-                <div class="success-ad-title">Cmon Bloodborne The Board G...</div>
+                <div class="success-ad-title">Cmon Bloodborne The Board Game</div>
                 <div class="success-ad-price">$ 215.454<sup>34</sup></div>
             </div>
-            <div class="contact-detail">Ad</div>
+            <div class="success-ad-tag">Ad</div>
         </div>
         
         <div class="success-btns">

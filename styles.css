@@ -221,10 +221,14 @@ body {
   align-items: center;
   justify-content: center;
   font-weight: 700;
-  color: #fff;
+  color: #0f0a0a;
   margin-right: 12px;
   flex-shrink: 0;
 }
+
+/* White avatar variant: white circle with black initials and a clear shadow */
+.avatar--white { background:#ffffff; color:#111827; box-shadow: 0 6px 18px rgba(16,24,40,0.08); border: 1px solid rgba(0,0,0,0.04); }
+.avatar--colored { box-shadow: 0 4px 12px rgba(16,24,40,0.06); }
 
 /* Improved search input */
 .search-wrapper { max-width: 720px; margin: 0 auto; }
@@ -249,14 +253,17 @@ body {
 /* Continue button: bigger, pill, more contrast */
 #btn-amount-continue.btn-blue { background: linear-gradient(180deg, var(--mp-blue) 0%, #5c43f0 100%); padding: 14px 18px; border-radius: 14px; font-size:16px; }
 
-/* Payment method: large total */
-.payment-method-screen .current-amount-value { font-size: 7vw; font-weight:800; display:block; text-align:right; }
+/* Payment method: total sizing (reduced) */
+.payment-method-screen .current-amount-value { font-size: 4.5vw; font-weight:800; display:block; text-align:right; }
+
+/* Increase spacing between recipient and card area */
+.payment-recipient-card { margin-bottom: 14px; }
 
 /* Payment method card styling */
 .payment-method-card { background: #fff; border-radius:12px; border:1px solid var(--mp-border); padding:12px; margin: 12px 16px; box-shadow: 0 6px 18px rgba(16,24,40,0.03); }
 
 /* Success screen: stronger checkmark and buttons */
-#screen-success .success-checkmark { width:96px; height:96px; font-size:40px; margin: 36px auto 12px; border-radius:50%; background:#E6FBF0; color:var(--mp-green); display:flex; align-items:center; justify-content:center; }
+#screen-success .success-checkmark { width:96px; height:96px; font-size:40px; margin: 36px auto 12px; border-radius:50%; background:#E6FBF0; color:#ffffff; display:flex; align-items:center; justify-content:center; }
 #screen-success .success-title { font-size:20px; font-weight:800; }
 
 #screen-success .success-btns { padding-bottom: 28px; }
@@ -318,8 +325,8 @@ body {
 #screen-contacts .contact-detail { color: #6b7280; font-size: 14px; }
 
 /* Transfer / Amount / Payment styles */
-.payment-recipient-card { border:1px solid var(--mp-border); border-radius:12px; padding:12px; display:flex; align-items:center; gap:12px; background:white; margin: 16px; }
-.payment-recipient-card .avatar { width:56px; height:56px; border-radius:50%; display:flex; align-items:center; justify-content:center; color:white; font-weight:700; flex-shrink:0; }
+.payment-recipient-card { border:1px solid rgba(6,10,24,0.06); border-radius:12px; padding:12px; display:flex; align-items:center; gap:12px; background:white; margin: 16px; box-shadow: 0 14px 30px rgba(6,10,24,0.16); }
+.payment-recipient-card .avatar { width:56px; height:56px; border-radius:50%; display:flex; align-items:center; justify-content:center; color:rgb(0, 0, 0); font-weight:700; flex-shrink:0; }
 .amount { font-size:48px; font-weight:700; text-align:center; margin: 24px 0; }
 .amount-available { text-align:center; color:#6b7280; margin-bottom:16px; }
 .quick-amounts { display:flex; justify-content:center; gap:12px; padding: 0 16px; margin-bottom:16px; }
@@ -329,7 +336,7 @@ body {
 
 /* Success screen placement for action buttons */
 #screen-success { background: #fff; min-height: 100vh; padding-bottom: 80px; }
-#screen-success .success-checkmark { width: 80px; height: 80px; font-size: 36px; margin: 28px auto 12px; display:flex; align-items:center; justify-content:center; border-radius:50%; background:#E6FBF0; color:var(--mp-green); }
+#screen-success .success-checkmark { width: 80px; height: 80px; font-size: 36px; margin: 28px auto 12px; display:flex; align-items:center; justify-content:center; border-radius:50%; background:#009649; color:white; }
 #screen-success .success-title { text-align:center; font-size:20px; font-weight:700; margin-top:12px; }
 #screen-success .success-subtitle { text-align:center; color:#6b7280; margin-bottom:18px; }
 #screen-success .success-ad { margin: 12px 16px; }
@@ -349,5 +356,45 @@ body {
 }
 
 #screen-success .success-btns .btn-blue { flex: 1; }
+
+
+/* ---- Overrides & refinements (Safe-area, contacts, total row, success ad) ---- */
+
+/* Ensure header respects notch */
+.header-yellow, .header { padding-top: env(safe-area-inset-top, 8px); z-index: 60; }
+
+/* Contacts: thin separators and bank icons */
+#screen-contacts .contact-item { padding:12px 10px; border-radius:12px; margin-bottom:8px; border-bottom:0.5px solid #eeeeee; background:transparent; }
+#screen-contacts .contact-item:hover { background:#fbfdff; }
+.bank-icons img { width:16px; height:16px; margin-left:8px; vertical-align:middle; }
+.tag-vos { display:inline-block; background:#e8f4ff; color:var(--mp-blue); font-weight:700; font-size:12px; padding:2px 8px; border-radius:999px; margin-left:8px; }
+
+/* Total row: label left, amount right (confirmation style) */
+.total-row { display:flex; justify-content:space-between; align-items:center; padding: 8px 18px; }
+.total-row .total-label { font-size:14px; color:#111827; font-weight:600; }
+.total-row .total-amount { font-size:18px; font-weight:600; }
+
+/* Fix payment choices visual density */
+.payment-choices { margin: 8px 0 12px; }
+.choice-row { padding:10px; }
+.choice-title { font-size:15px; }
+.choice-sub { font-size:13px; }
+
+/* Keep transfer button fixed on payment screen to avoid keyboard displacement */
+.payment-method-screen .btn-transfer { position: fixed; bottom: calc(5vw + env(safe-area-inset-bottom, 16px)); left: 50%; transform: translateX(-50%); z-index:150; }
+
+/* Success ad component */
+.success-ad { display:flex; gap:12px; align-items:center; border:1px solid #eef2f6; padding:10px; border-radius:10px; margin: 14px 16px; }
+.success-ad-img { width:72px; height:72px; object-fit:cover; border-radius:8px; }
+.success-ad-info { flex:1; }
+.success-ad-title { font-weight:700; color:#111827; margin-bottom:4px; }
+.success-ad-price { font-weight:800; color:#111827; }
+.success-ad-tag { font-size:12px; color:#6b7280; }
+
+/* Success screen headline stronger and centered */
+#screen-success .success-title { text-align:center; font-size:22px; font-weight:800; margin-top:8px; }
+
+/* Minor tweaks to ensure consistent radii and shadows */
+.payment-method-card, .choice-row, .credits-card, .benefit { border-radius:12px; }
 
 

@@ -5,8 +5,8 @@ const config = {
 
 let appState = {
     currentBalance: 422767.64, // Enzo's base balance
-    transferFlowBalance: 422967.64, // Zaira flow start balance
-    selectedRecipientName: 'Zaira Abril Mudry',
+    transferFlowBalance: 422967.64, // default flow start balance
+    selectedRecipientName: 'Jose Leonardo Caballero',
     currentAmount: 0
 };
 
