@@ -118,5 +118,30 @@ window.goHome = goHome;
 window.goToContacts = goToContacts;
 window.goToAmount = goToAmount;
 
+// Inicializar comportamientos de la pantalla de pago (simulación de selección)
+const initPaymentChoices = () => {
+    const rows = document.querySelectorAll('.choice-row');
+    if (!rows || rows.length === 0) return;
+    rows.forEach(r => {
+        r.addEventListener('click', () => {
+            rows.forEach(x => x.classList.remove('selected'));
+            r.classList.add('selected');
+            const amt = parseFloat(r.dataset.amount) || 0;
+            appState.currentAmount = amt;
+            currentAmountDisplays.forEach(d => d.innerText = formatCurrency(appState.currentAmount));
+        });
+    });
+    // establecer selección por defecto si existe
+    const selected = document.querySelector('.choice-row.selected') || rows[0];
+    if (selected) {
+        const amt = parseFloat(selected.dataset.amount) || 0;
+        appState.currentAmount = amt;
+        currentAmountDisplays.forEach(d => d.innerText = formatCurrency(appState.currentAmount));
+    }
+};
+
+// Ejecutar inicializadores de UI
+initPaymentChoices();
+
 // Inicialización
 goHome();

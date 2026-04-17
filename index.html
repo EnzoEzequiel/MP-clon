@@ -147,11 +147,14 @@
     <div id="screen-contacts" class="screen">
         <div class="mobile-container">
         <div class="header">
-            <div class="header-left"><button class="btn-back" onclick="goHome()">←</button></div>
+            <div class="header-left"><button class="btn-back" onclick="goHome()"><img src="assets/icons/back.svg" alt="Atrás"></button></div>
             <div class="header-center"><div class="header-title">Transferir</div></div>
-            <div class="header-right"><button class="btn-icon">⚙️</button><button class="btn-icon">❓</button></div>
+            <div class="header-right"><button class="btn-icon"><img src="assets/icons/settings.svg" alt="Ajustes"></button><button class="btn-icon"><img src="assets/icons/info.svg" alt="Ayuda"></button></div>
         </div>
-        <input type="text" placeholder="Alias, CBU/CVU, celular o nombre" style="width: 80vw; margin: 5vw auto; padding: 3vw; border-radius: 10px; border: 1px solid #ccc;">
+        <div class="search-wrapper" style="width:80vw; margin:5vw auto; position:relative;">
+            <input class="search-input" type="text" placeholder="Alias, CBU/CVU, celular o nombre">
+            <button class="search-camera" aria-label="camera"><img src="assets/icons/camera.svg" alt="camera"></button>
+        </div>
         <div class="contact-list">
             <div class="label">Sugeridos</div>
             <div class="contact-item" onclick="selectRecipient('Zaira Abril Mudry', 'ZA', 'NaviMudry43')">
@@ -174,7 +177,7 @@
     <div id="screen-amount" class="screen">
         <div class="mobile-container">
         <div class="header">
-            <div class="header-left"><button class="btn-back" onclick="goToContacts()">←</button></div>
+            <div class="header-left"><button class="btn-back" onclick="goToContacts()"><img src="assets/icons/back.svg" alt="Atrás"></button></div>
             <div class="header-center"><div class="header-title">Ingresá el monto</div></div>
         </div>
         <div class="payment-recipient-card" style="justify-content: space-around; border: none; background-color: white; margin: 3vw var(--body-padding); box-shadow: 0 2px 4px rgba(0,0,0,0.05); padding: 3vw;">
@@ -200,7 +203,7 @@
     <div id="screen-payment-method" class="screen payment-method-screen">
         <div class="mobile-container">
         <div class="header">
-            <div class="header-left"><button class="btn-back" onclick="goToAmount()">←</button></div>
+            <div class="header-left"><button class="btn-back" onclick="goToAmount()"><img src="assets/icons/back.svg" alt="Atrás"></button></div>
             <div class="header-center"><div class="header-title">Cómo querés transferir</div></div>
         </div>
         
@@ -212,17 +215,58 @@
             </div>
         </div>
 
-        <div style="font-weight: 700; font-size: 8vw; text-align: right; padding: 0 var(--body-padding); margin-bottom: 5vw">Total $ <span class="current-amount-value">200</span></div>
+        <div class="total-display">
+            <div class="total-label">Total</div>
+            <div class="total-amount">$ <span class="current-amount-value">200</span></div>
+        </div>
 
         <div class="payment-method-card">
-            <div style="display: flex; justify-content: space-between; align-items: center">
+            <div class="payment-options">
                 <div class="label">Dinero disponible: $ <span id="payment-available-value">422.967,64</span></div>
-                <div style="color: var(--success-green); font-weight: 500">Sin costo</div>
+                <div class="label-right">Sin costo</div>
             </div>
-            <img src="https://via.placeholder.com/350x200/2C3A4F/FFFFFF?text=Tarjeta+Mercado+Pago" alt="Tarjeta MP" style="width: 100%; border-radius: 15px; margin-top: 3vw;">
-            <div style="color: var(--success-green); text-align: center; margin-top: 1vw">Sin comisión</div>
+
+            <!-- Simulated payment choices (non-network interactive, just UI) -->
+            <div class="payment-choices">
+                <div class="choice-row selected" data-amount="200">
+                    <div class="choice-left">
+                        <div class="radio" aria-hidden="true"></div>
+                        <div class="choice-title">$ 200 <div class="choice-sub">Dinero disponible</div></div>
+                    </div>
+                    <div class="choice-right">Sin costo</div>
+                </div>
+
+                <div class="choice-row" data-amount="246.23">
+                    <div class="choice-left">
+                        <div class="radio" aria-hidden="true"></div>
+                        <div class="choice-title">1x $ 246,23 <div class="choice-sub">Cuotas sin Tarjeta</div></div>
+                    </div>
+                    <div class="choice-right">$ 246,23</div>
+                </div>
+
+                <div class="choice-row" data-amount="299.87">
+                    <div class="choice-left">
+                        <div class="radio" aria-hidden="true"></div>
+                        <div class="choice-title">3x $ 99,96 <div class="choice-sub">Cuotas sin Tarjeta</div></div>
+                    </div>
+                    <div class="choice-right">$ 299,87</div>
+                </div>
+            </div>
+
+            <div class="card-carousel">
+                <div class="card-item">
+                    <img src="assets/icons/card-illustration.svg" alt="Tarjeta MP" />
+                </div>
+                <div class="card-dots" aria-hidden="true">
+                    <span class="dot active"></span>
+                    <span class="dot"></span>
+                    <span class="dot"></span>
+                </div>
+            </div>
+
+            <div class="card-footer">Sin comisión</div>
         </div>
-        <button class="btn-blue" onclick="confirmPayment()">Transferir</button>
+        <button class="btn-blue btn-transfer" onclick="confirmPayment()">Transferir</button>
         </div>
     </div>
 

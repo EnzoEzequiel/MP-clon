@@ -164,6 +164,28 @@ body {
 
 #screen-contacts .header-title { font-weight: 700; color: #111827; }
 
+/* Header buttons */
+.btn-back, .btn-icon {
+  background: rgba(255,255,255,0.85);
+  border-radius: 10px;
+  width:38px;
+  height:38px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border:none;
+}
+.btn-back img, .btn-icon img { width:18px; height:18px; display:block; }
+
+.header-center .header-title { font-size:16px; }
+
+/* Slightly darker yellow bar like reference */
+.header-yellow { background: linear-gradient(180deg, var(--mp-yellow) 0%, var(--mp-yellow-dark) 100%); }
+
+/* Contact list subtle dividers */
+#screen-contacts .contact-item { border-bottom:1px solid rgba(229,229,229,0.6); }
+
+
 #screen-contacts .contact-list { padding: 12px 16px; }
 
 #screen-contacts .label { font-weight: 600; color: #111827; margin-bottom: 8px; }
@@ -192,6 +214,92 @@ body {
   margin-right: 12px;
   flex-shrink: 0;
 }
+
+/* Improved search input */
+.search-wrapper { max-width: 720px; margin: 0 auto; }
+.search-input { width: 100%; padding: 12px 44px 12px 16px; border-radius: 14px; border: 1px solid #E6E9EF; box-shadow: 0 6px 18px rgba(16,24,40,0.03); font-size: 14px; }
+.search-camera { position: absolute; right: 6vw; top: 50%; transform: translateY(-50%); background: #eef2ff; border-radius: 10px; border: none; width:38px; height:38px; display:flex; align-items:center; justify-content:center; }
+.search-camera img { width:18px; height:18px; }
+
+/* Contact item tweaks to match reference */
+#screen-contacts .contact-item { padding: 12px 10px; border-radius: 12px; }
+#screen-contacts .contact-name { font-weight: 700; font-size: 15px; }
+#screen-contacts .contact-detail { color:#6b7280; font-size:13px; margin-top:4px; }
+
+/* Larger initials style like reference */
+#screen-contacts .avatar { width:48px; height:48px; font-size:14px; }
+
+/* Amount screen improvements */
+.amount { font-size:64px; font-weight:800; text-align:center; margin: 18px 0; }
+.amount small { display:block; font-size:14px; color:#6b7280; }
+.amount-available { text-align:center; color:#6b7280; margin-bottom:18px; }
+.quick-amount-btn { background:white; border:1px solid #ddd; padding:8px 12px; border-radius:18px; cursor:pointer; font-weight:700; }
+
+/* Continue button: bigger, pill, more contrast */
+#btn-amount-continue.btn-blue { background: linear-gradient(180deg, var(--mp-blue) 0%, #5c43f0 100%); padding: 14px 18px; border-radius: 14px; font-size:16px; }
+
+/* Payment method: large total */
+.payment-method-screen .current-amount-value { font-size: 7vw; font-weight:800; display:block; text-align:right; }
+
+/* Payment method card styling */
+.payment-method-card { background: #fff; border-radius:12px; border:1px solid var(--mp-border); padding:12px; margin: 12px 16px; box-shadow: 0 6px 18px rgba(16,24,40,0.03); }
+
+/* Success screen: stronger checkmark and buttons */
+#screen-success .success-checkmark { width:96px; height:96px; font-size:40px; margin: 36px auto 12px; border-radius:50%; background:#E6FBF0; color:var(--mp-green); display:flex; align-items:center; justify-content:center; }
+#screen-success .success-title { font-size:20px; font-weight:800; }
+
+#screen-success .success-btns { padding-bottom: 28px; }
+#screen-success .success-btns .btn-blue:first-child { background: white; color: var(--mp-blue); border: 1px solid #e6e9ef; }
+
+/* Minor responsive tweaks */
+@media (max-width:420px) {
+  .search-camera { right: 6vw; }
+  .amount { font-size:48px; }
+}
+
+/* Payment method specific styles to match reference */
+.payment-method-card { padding: 12px 14px; border-radius: 14px; }
+.payment-method-card .payment-options { display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; }
+.payment-method-card .label { font-weight:600; color:#111827; }
+.payment-method-card .label-right { color: #10b981; font-weight:600; }
+
+.card-carousel { margin-top: 6px; position:relative; }
+.card-item { width: calc(100% - 32px); margin: 0 auto; border-radius:14px; overflow:hidden; }
+.card-item img { width:100%; display:block; border-radius:14px; box-shadow: 0 10px 24px rgba(16,24,40,0.08); }
+.card-dots { display:flex; justify-content:center; gap:6px; margin-top:8px; }
+.card-dots .dot { width:8px; height:8px; border-radius:999px; background:#e5e7eb; display:inline-block; }
+.card-dots .dot.active { background: #6b46c1; }
+.card-footer { text-align:center; padding:10px; color:#6b7280; font-weight:700; margin-top:8px; }
+
+/* Transfer big button */
+.btn-transfer { display:block; width: calc(100% - 32px); max-width:420px; margin: 16px auto 28px; padding:14px 18px; border-radius:14px; font-size:16px; font-weight:700; box-shadow: 0 8px 20px rgba(79,70,229,0.18); background: linear-gradient(180deg,#5c43f0,#4f46e5); border:none; color:#fff; }
+
+/* Card selection and payment rows mimic reference spacing */
+.payment-method-screen .payment-method-card + .btn-transfer { margin-top: 6px; }
+
+@media (max-width:420px) {
+  .card-item { width: calc(100% - 40px); }
+  .btn-transfer { width: calc(100% - 28px); }
+}
+
+  /* Total display */
+  .total-display { text-align:center; margin: 12px 0 6px; }
+  .total-display .total-label { font-size:14px; color:#111827; font-weight:600; margin-bottom:6px; }
+  .total-display .total-amount { font-size:48px; font-weight:800; line-height:1; }
+
+  /* Payment choices list */
+  .payment-choices { margin: 8px 0 12px; display:flex; flex-direction:column; gap:10px; }
+  .choice-row { display:flex; justify-content:space-between; align-items:center; padding:12px; border-radius:12px; background:#fff; border:1px solid #eef2f6; box-shadow: 0 4px 14px rgba(16,24,40,0.03); cursor:pointer; }
+  .choice-row .choice-left { display:flex; align-items:center; gap:12px; }
+  .choice-row .radio { width:18px; height:18px; border-radius:50%; border:2px solid #cbd5e1; background: #fff; flex-shrink:0; }
+  .choice-row.selected { border-color: #6b46c1; box-shadow: 0 8px 20px rgba(79,70,229,0.08); }
+  .choice-row.selected .radio { background: linear-gradient(180deg,#6b46c1,#5c43f0); border-color:transparent; }
+  .choice-title { font-weight:700; color:#111827; }
+  .choice-sub { font-weight:500; color:#6b7280; font-size:13px; }
+  .choice-right { color:#111827; font-weight:700; }
+
+  /* Slightly tighter card area */
+  .card-carousel { margin-top: 6px; }
 
 #screen-contacts .contact-info { flex: 1; }
 
