@@ -19,7 +19,6 @@ const state = {
   destinationAccount: null,
   amountDigits: "",
   sourceAccount: 0,
-  assistantOpen: false,
   processing: false,
 };
 
@@ -27,8 +26,8 @@ const contacts = [
   { id: "sofia", name: "Sofía Almirón", alias: "Sofi.Almiron", initials: "SA", bank: "Libre Bank", color: "#e6f3ed", recent: true },
   { id: "mateo", name: "Mateo Benítez", alias: "Mateo.Benitez", initials: "MB", bank: "Banco del Sur", color: "#eaf0f7", recent: true },
   { id: "valentina", name: "Valentina Ríos", alias: "Vale.Rios", initials: "VR", bank: "Libre Bank", color: "#f6eee5", recent: true },
-  { id: "tomas", name: "Tomás Pereyra", alias: "Tomas.Pereyra", initials: "TP", bank: "Cooperativa Federal", color: "#f1edf7", recent: false },
-  { id: "camila", name: "Camila Acosta", alias: "Camila.Acosta", initials: "CA", bank: "Banco del Sur", color: "#edf2e8", recent: false },
+  { id: "tomas", name: "Zaira Abril Mudry", alias: "NaviMemesina43", initials: "TP", bank: "Cooperativa Federal", color: "#f1edf7", recent: false },
+  { id: "camila", name: "Alberto Gimenez Britez", alias: "Alberto.05", initials: "CA", bank: "Banco del Sur", color: "#edf2e8", recent: false },
 ];
 
 const destinationAccounts = [
@@ -42,9 +41,9 @@ const sourceAccounts = [
 ];
 
 const currencyBalances = {
-  ARS: { label: "Pesos", amount: 78630.63, change: "+8,4% este mes" },
+  ARS: { label: "Pesos", amount: 78630.63, change: "Rinde 18,5%" },
   USD: { label: "Dólares", amount: 125.40, change: "Objetivo: USD 500" },
-  GOALS: { label: "Metas", amount: 2, change: "2 objetivos en curso" },
+  GOALS: { label: "Reservas", amount: 2, change: "2 reservas en curso" },
   YIELD: { label: "Rendimiento", amount: 8.4, change: "Progreso educativo" },
 };
 
@@ -101,7 +100,7 @@ function escapeHTML(value) {
 }
 
 function brandLockup() {
-  return `<div class="brand-lockup"><div class="brand-mark" aria-hidden="true">LB</div><div><p class="brand-name">Libre Bank</p><p class="brand-caption">Aprendé. Organizá. Avanzá.</p></div></div>`;
+  return `<div class="brand-lockup"><img class="brand-mark" src="logo-libre-bank.png" alt=""><div><p class="brand-name">Libre Bank</p><p class="brand-caption">Aprendé.</p></div></div>`;
 }
 
 function bottomNav() {
@@ -119,50 +118,59 @@ function bottomNav() {
   </nav>`;
 }
 
-function assistant() {
-  const floatHigh = ["amount", "review", "success"].includes(state.screen) ? " float-high" : "";
-  const successFloat = state.screen === "success" ? " success-float" : "";
-  return `<button class="assistant-launcher${floatHigh}${successFloat}" data-action="assistant" aria-label="Abrir ayuda">${icon("spark")}</button>
-    ${state.assistantOpen ? `<aside class="assistant-panel${floatHigh}${successFloat}"><strong>Asistente Libre</strong><p>Este espacio es una simulación educativa. Podés practicar un envío sin mover dinero real.</p><button class="text-link" data-action="assistant-close">Entendido</button></aside>` : ""}`;
-}
-
 function homeTemplate() {
   const balance = currencyBalances[state.currency];
+  const isMoneyBalance = state.currency === "ARS" || state.currency === "USD";
+  const balanceCurrency = state.currency === "USD" ? "US$" : "$";
+  const balanceWhole = money(Math.trunc(balance.amount), 0);
+  const balanceCents = String(Math.round((balance.amount % 1) * 100)).padStart(2, "0");
   const balanceValue = state.currency === "GOALS"
-    ? `${balance.amount} metas`
+    ? `${balance.amount} reservas`
     : state.currency === "YIELD"
       ? `${money(balance.amount, 1)}%`
-      : `${state.currency === "USD" ? "US$" : "$"} ${money(balance.amount)}`;
-  const tabs = [["ARS", "Pesos"], ["USD", "Dólares"], ["GOALS", "Metas"], ["YIELD", "Avance"]];
+      : "";
+  const tabs = [["ARS", "Pesos"], ["USD", "Dólares"], ["GOALS", "Reservas"], ["YIELD", "Inversiones"]];
+  const balanceNote = state.currency === "ARS"
+    ? `<span class="balance-note-arrow" aria-hidden="true">↑</span>${balance.change}`
+    : balance.change;
 
   return `<section class="view with-nav">
     <header class="home-hero">
       <div class="home-topline">
-        ${brandLockup()}
+        <div class="home-greeting"><img class="home-logo" src="logo-libre-bank.png" alt=""><h1 class="greeting">Hola, Enzo</h1></div>
         <div class="header-tools">
           <button class="icon-button" data-action="search" aria-label="Buscar">${icon("search")}</button>
           <button class="icon-button" data-action="notifications" aria-label="Notificaciones">${icon("bell")}</button>
         </div>
       </div>
-      <h1 class="greeting">Hola, qué bueno verte</h1>
-      <p class="greeting-sub">Tu espacio para aprender a manejar tus finanzas.</p>
       <div class="currency-tabs" role="tablist" aria-label="Resumen">
-        ${tabs.map(([id, label]) => `<button class="currency-tab ${state.currency === id ? "active" : ""}" role="tab" aria-selected="${state.currency === id}" data-action="currency" data-currency="${id}">${label}</button>`).join("")}
+        ${tabs.map(([id, label]) => `<button class="currency-tab ${state.currency === id ? "active" : ""}" role="tab" aria-selected="${state.currency === id}" data-action="currency" data-currency="${id}">${id === "YIELD" ? '<span class="currency-tab-dot" aria-hidden="true"></span>' : ""}${label}</button>`).join("")}
       </div>
       <section class="balance-card" aria-label="Resumen de cuenta">
         <div class="balance-top">
-          <div><p class="balance-label">${state.currency === "GOALS" ? "Objetivos activos" : state.currency === "YIELD" ? "Tu progreso" : "Saldo disponible de práctica"}</p>
-            <p class="balance-value">${state.showBalance ? balanceValue : "••••••"}</p></div>
-          <button class="balance-visibility" data-action="toggle-balance" aria-label="${state.showBalance ? "Ocultar" : "Mostrar"} saldo">${icon(state.showBalance ? "eye" : "eyeOff")}</button>
+          <div class="balance-main">
+            <p class="balance-value">${state.showBalance ? isMoneyBalance ? `<span>${balanceCurrency} ${balanceWhole}</span><sup class="balance-cents">${balanceCents}</sup>` : balanceValue : "••••••"}</p>
+            <button class="balance-visibility" data-action="toggle-balance" aria-label="${state.showBalance ? "Ocultar" : "Mostrar"} saldo">${icon(state.showBalance ? "eye" : "eyeOff")}</button>
+          </div>
+          <button class="balance-details" data-action="toast" data-message="Detalle de saldo disponible" aria-label="Ver detalle del saldo">${icon("chevron")}</button>
         </div>
-        <p class="balance-note">${balance.change}</p>
+        <p class="balance-note">${balanceNote}</p>
         <div class="balance-actions">
-          <button class="balance-action" data-action="learn"><span>${icon("wallet")}</span><span>Cargar</span></button>
-          <button class="balance-action" data-action="start-practice"><span>${icon("send")}</span><span>Simular envío</span></button>
-          <button class="balance-action" data-action="profile"><span>${icon("id")}</span><span>Mis datos</span></button>
+          <button class="balance-action" data-action="learn"><span>${icon("wallet")}</span><span>Ingresar</span></button>
+          <button class="balance-action" data-action="start-practice"><span>${icon("send")}</span><span>Transferir</span></button>
+          <button class="balance-action" data-action="profile"><span>${icon("id")}</span><span>Tus alias</span></button>
         </div>
       </section>
     </header>
+
+    <section class="section home-section">
+      <div class="home-section-heading"><h2>Créditos</h2><button class="text-link" data-action="toast" data-message="Sección de créditos demostrativa.">Consultar ${icon("arrowRight")}</button></div>
+      <button class="credit-summary" data-action="toast" data-message="El detalle de tus créditos es demostrativo.">Consultá el detalle de tus créditos</button>
+    </section>
+
+    <section class="section home-section home-benefits">
+      <div class="home-section-heading"><h2>Beneficios</h2><button class="text-link" data-action="toast" data-message="Sección de beneficios demostrativa.">Conocer todos ${icon("arrowRight")}</button></div>
+    </section>
 
     <section class="section">
       <div class="section-heading"><h2>Tu recorrido</h2><button class="text-link" data-action="nav" data-tab="progress">Ver progreso ${icon("arrowRight")}</button></div>
@@ -188,7 +196,7 @@ function homeTemplate() {
         <div class="activity-row"><div class="activity-icon">${icon("send")}</div><div class="activity-main"><strong>Ejercicio de envío</strong><span>Simulación · Ayer</span></div><span class="activity-amount">$ 2.500</span></div>
       </div>
     </section>
-    ${bottomNav()}${assistant()}
+    ${bottomNav()}
   </section>`;
 }
 
@@ -219,7 +227,6 @@ function transferTemplate() {
     ${suggested.length ? `<h2 class="list-label">Contactos frecuentes</h2><div class="contact-list">${suggested.map(contactRow).join("")}</div>` : ""}
     ${recent.length ? `<h2 class="list-label">Últimos destinatarios</h2><div class="contact-list">${recent.map(contactRow).join("")}</div>` : ""}
     ${!filtered.length ? `<div class="empty-state">No encontramos coincidencias. Probá con otro nombre o alias.</div>` : ""}
-    ${assistant()}
   </section>`;
 }
 
@@ -234,7 +241,6 @@ function accountTemplate() {
     <div class="contact-list">
       ${destinationAccounts.map((account) => `<button class="account-row" data-action="select-account" data-id="${account.id}"><span class="account-mark">${account.mark}</span><span class="account-copy"><strong>${account.name}</strong><span>${account.institution} · ${account.detail}</span></span>${icon("chevron", "chevron")}</button>`).join("")}
     </div>
-    ${assistant()}
   </section>`;
 }
 
@@ -250,13 +256,12 @@ function amountTemplate() {
   return `<section class="view flow-view amount-view">
     <div class="flow-toolbar"><button class="icon-button back-button" data-action="back" aria-label="Volver">${icon("arrowLeft")}</button><span></span></div>
     <div class="amount-heading"><h1 class="flow-title">Definí el importe</h1></div>
-    <div class="recipient-card"><span class="contact-avatar" style="background:${state.recipient.color}">${state.recipient.initials}</span><div><strong>${state.recipient.name}</strong><span>Alias: ${state.recipient.alias}</span><button class="inline-action" data-action="toast" data-message="Concepto: ejercicio libre">Concepto: ejercicio libre ${icon("arrowRight")}</button></div></div>
+    <div class="recipient-card"><span class="contact-avatar" style="background:${state.recipient.color}">${state.recipient.initials}</span><div><strong>${state.recipient.name}</strong><span>Alias: ${state.recipient.alias}</span><button class="inline-action" data-action="toast" data-message="Motivo: Varios">Motivo: Varios ${icon("arrowRight")}</button></div></div>
     <div class="amount-display" aria-live="polite"><span class="amount-currency">$</span><span class="amount-number">${amountDisplay()}</span><span class="amount-caret"></span></div>
     <p class="available-balance">Disponible: <strong>$ ${money(sourceAccounts[state.sourceAccount].balance)}</strong></p>
     <div class="quick-amounts">${quickAmounts.map((value) => `<button class="quick-amount ${amount === value ? "active" : ""}" data-action="quick-amount" data-value="${value}">$ ${value.toLocaleString("es-AR")}</button>`).join("")}</div>
     <button class="primary-button amount-continue" data-action="continue" ${amount <= 0 || amount > sourceAccounts[state.sourceAccount].balance ? "disabled" : ""} >Revisar envío ${icon("arrowRight")}</button>
     <p class="disclaimer">Simulación educativa. No se realiza ningún movimiento de dinero.</p>
-    ${assistant()}
   </section>
   <div class="keypad" role="group" aria-label="Teclado numérico">
     <div class="keypad-grid">${keypadKeys.map(([key, letters]) => key === "backspace"
@@ -286,7 +291,6 @@ function reviewTemplate() {
     <div class="total-card"><span>Destino</span><strong style="font-size:14px;letter-spacing:0">${state.destinationAccount.name}</strong></div>
     <p class="disclaimer">Esta pantalla es demostrativa. No se debita saldo ni se contacta a ninguna entidad financiera.</p>
     <button class="primary-button" data-action="confirm">Simular envío ${icon("arrowRight")}</button>
-    ${assistant()}
   </section>`;
 }
 
@@ -307,7 +311,7 @@ function successTemplate() {
       <button class="primary-button" data-action="receipt">${icon("copy")} Copiar constancia</button>
       <button class="secondary-button" data-action="home">Ir al panel principal</button>
     </div>
-  </section>${assistant()}`;
+  </section>`;
 }
 
 function loadingTemplate() {
@@ -325,7 +329,7 @@ function secondaryTemplate(page) {
     : page === "more"
       ? `<article class="lesson-card"><span class="lesson-number">01</span><h3>Perfil de aprendizaje</h3><p>Preferencias, datos de demostración y configuración.</p></article><article class="lesson-card"><span class="lesson-number">02</span><h3>Seguridad y privacidad</h3><p>Buenas prácticas para cuidar tus cuentas y tus datos.</p></article>`
       : `<article class="lesson-card"><span class="lesson-number">01</span><h3>Presupuesto mensual</h3><p>Aprendé a separar gastos fijos, variables y objetivos.</p><button class="text-link" data-action="lesson" data-lesson="gastos">Abrir unidad ${icon("arrowRight")}</button></article><article class="lesson-card"><span class="lesson-number">02</span><h3>Hábitos de ahorro</h3><p>Convertí un objetivo grande en pasos posibles de sostener.</p><button class="text-link" data-action="lesson" data-lesson="ahorro">Abrir unidad ${icon("arrowRight")}</button></article><article class="lesson-card"><span class="lesson-number">03</span><h3>Seguridad digital</h3><p>Identificá mensajes engañosos y protegé tus accesos.</p><button class="text-link" data-action="lesson" data-lesson="seguridad">Abrir unidad ${icon("arrowRight")}</button></article>`;
-  return `<section class="view with-nav simple-page">${brandLockup()}<span class="eyebrow">Libre Bank</span><h1>${config.title}</h1><p class="flow-description">${config.subtitle}</p>${cards}${bottomNav()}${assistant()}</section>`;
+  return `<section class="view with-nav simple-page">${brandLockup()}<span class="eyebrow">Libre Bank</span><h1>${config.title}</h1><p class="flow-description">${config.subtitle}</p>${cards}${bottomNav()}</section>`;
 }
 
 function lessonTemplate(lessonId) {
@@ -335,7 +339,7 @@ function lessonTemplate(lessonId) {
     seguridad: ["Cuidá tus datos", "No compartas contraseñas ni códigos de verificación. Desconfiá de mensajes urgentes que pidan entrar a enlaces o instalar aplicaciones."],
   };
   const [title, content] = lessons[lessonId] || lessons.gastos;
-  return `<section class="view simple-page">${toolbar()}<span class="eyebrow">Microlección · 5 minutos</span><h1>${title}</h1><article class="lesson-card"><p>${content}</p></article><div style="margin-top:22px"><button class="primary-button" data-action="lesson-done">Marcar como leída ${icon("check")}</button></div></section>${assistant()}`;
+  return `<section class="view simple-page">${toolbar()}<span class="eyebrow">Microlección · 5 minutos</span><h1>${title}</h1><article class="lesson-card"><p>${content}</p></article><div style="margin-top:22px"><button class="primary-button" data-action="lesson-done">Marcar como leída ${icon("check")}</button></div></section>`;
 }
 
 function render({ keepFocus = false } = {}) {
@@ -366,7 +370,6 @@ function navigate(screen, { replace = false, direction = "forward" } = {}) {
   if (!replace && state.screen !== screen) state.history.push(state.screen);
   state.direction = direction;
   state.screen = screen;
-  state.assistantOpen = false;
   render();
 }
 
@@ -374,7 +377,6 @@ function goBack() {
   const previous = state.history.pop() || "home";
   state.direction = "back";
   state.screen = previous;
-  state.assistantOpen = false;
   render();
 }
 
@@ -537,14 +539,6 @@ root.addEventListener("click", async (event) => {
       }
       break;
     }
-    case "assistant":
-      state.assistantOpen = !state.assistantOpen;
-      render();
-      break;
-    case "assistant-close":
-      state.assistantOpen = false;
-      render();
-      break;
     case "lesson":
       navigate(`lesson:${target.dataset.lesson}`);
       break;
