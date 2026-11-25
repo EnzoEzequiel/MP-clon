@@ -49,6 +49,8 @@ const currencyBalances = {
 
 const iconPaths = {
   search: '<circle cx="11" cy="11" r="7.2"/><path d="m16.5 16.5 4 4"/>',
+  camera: '<path d="M4 7h3l1.5-2h7L17 7h3a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1Z"/><circle cx="12" cy="13" r="3.2"/>',
+  moreVertical: '<circle cx="12" cy="5" r="1.2" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1.2" fill="currentColor" stroke="none"/><circle cx="12" cy="19" r="1.2" fill="currentColor" stroke="none"/>',
   bell: '<path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"/><path d="M10 21h4"/>',
   eye: '<path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/>',
   eyeOff: '<path d="m3 3 18 18M10.6 10.6a2 2 0 0 0 2.8 2.8"/><path d="M9.9 5.2A10.8 10.8 0 0 1 12 5c6.4 0 10 7 10 7a17 17 0 0 1-3.2 3.8M6.2 6.2C3.5 8.1 2 12 2 12s3.6 7 10 7c1.2 0 2.3-.2 3.3-.6"/>',
@@ -206,9 +208,9 @@ function toolbar(backLabel = "Volver") {
 
 function contactRow(contact) {
   return `<button class="contact-row" data-action="select-recipient" data-id="${contact.id}">
-    <span class="contact-avatar" style="background:${contact.color}">${contact.initials}</span>
+    <span class="contact-avatar">${contact.initials}</span>
     <span class="contact-copy"><strong>${contact.name}</strong><span>Alias: ${contact.alias}</span></span>
-    <span class="contact-meta"><span class="bank-dot"></span>${contact.bank}</span>${icon("chevron", "chevron")}
+    <span class="contact-options" aria-hidden="true">${icon("moreVertical")}</span>
   </button>`;
 }
 
@@ -216,29 +218,26 @@ function transferTemplate() {
   const filtered = contacts.filter((contact) => `${contact.name} ${contact.alias} ${contact.bank}`.toLowerCase().includes(state.search.toLowerCase()));
   const suggested = filtered.filter((contact) => !contact.recent);
   const recent = filtered.filter((contact) => contact.recent);
-  return `<section class="view flow-view">
+  return `<section class="view flow-view transfer-view">
     ${toolbar()}
-    <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;">
-      <h1 class="flow-title">Enviar para practicar</h1>
+    <div class="transfer-heading">
+      <h1 class="flow-title">Transferir</h1>
       <div class="currency-switch"><span class="active">ARS $</span><span>USD</span></div>
     </div>
-    <p class="flow-description">Elegí a quién querés enviar en esta práctica.</p>
-    <label class="search-field">${icon("search")}<input id="recipient-search" type="search" autocomplete="off" placeholder="Buscá por alias, CBU/CVU o persona" value="${escapeHTML(state.search)}" aria-label="Buscar destinatario">${icon("id")}</label>
-    ${suggested.length ? `<h2 class="list-label">Contactos frecuentes</h2><div class="contact-list">${suggested.map(contactRow).join("")}</div>` : ""}
-    ${recent.length ? `<h2 class="list-label">Últimos destinatarios</h2><div class="contact-list">${recent.map(contactRow).join("")}</div>` : ""}
+    <label class="search-field">${icon("search")}<input id="recipient-search" type="search" autocomplete="off" placeholder="Alias, CBU/CVU, celular o nombre" value="${escapeHTML(state.search)}" aria-label="Buscar destinatario">${icon("camera")}</label>
+    ${suggested.length ? `<h2 class="list-label">Sugeridos</h2><div class="contact-list">${suggested.map(contactRow).join("")}</div>` : ""}
+    ${recent.length ? `<h2 class="list-label">Recientes</h2><div class="contact-list">${recent.map(contactRow).join("")}</div>` : ""}
     ${!filtered.length ? `<div class="empty-state">No encontramos coincidencias. Probá con otro nombre o alias.</div>` : ""}
   </section>`;
 }
 
 function accountTemplate() {
   const recipient = state.recipient;
-  return `<section class="view flow-view">
-    ${toolbar()}
-    <h1 class="flow-title">Cuenta de destino</h1>
-    <p class="flow-description">Definí en qué cuenta se recibiría este envío de ejemplo.</p>
-    <div class="recipient-card"><span class="contact-avatar" style="background:${recipient.color}">${recipient.initials}</span><div><strong>${recipient.name}</strong><span>Alias: ${recipient.alias}</span></div></div>
-    <h2 class="list-label">Cuentas disponibles</h2>
-    <div class="contact-list">
+  return `<section class="view flow-view account-view">
+    <div class="flow-toolbar"><button class="icon-button back-button" data-action="back" aria-label="Volver">${icon("arrowLeft")}</button></div>
+    <h1 class="flow-title">Elegí la cuenta</h1>
+    <div class="account-recipient"><strong>${recipient.name}</strong><span>CUIT: 20-22710277-3</span></div>
+    <div class="account-list">
       ${destinationAccounts.map((account) => `<button class="account-row" data-action="select-account" data-id="${account.id}"><span class="account-mark">${account.mark}</span><span class="account-copy"><strong>${account.name}</strong><span>${account.institution} · ${account.detail}</span></span>${icon("chevron", "chevron")}</button>`).join("")}
     </div>
   </section>`;
