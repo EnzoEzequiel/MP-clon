@@ -23,16 +23,16 @@ const state = {
 };
 
 const contacts = [
-  { id: "sofia", name: "Sofía Almirón", alias: "Sofi.Almiron", initials: "SA", bank: "Libre Bank", color: "#e6f3ed", recent: true },
+  { id: "sofia", name: "Sofía Almirón", alias: "Sofi.Almiron", initials: "SA", bank: "Mercado Pago", color: "#e6f3ed", recent: true },
   { id: "mateo", name: "Mateo Benítez", alias: "Mateo.Benitez", initials: "MB", bank: "Banco del Sur", color: "#eaf0f7", recent: true },
-  { id: "valentina", name: "Valentina Ríos", alias: "Vale.Rios", initials: "VR", bank: "Libre Bank", color: "#f6eee5", recent: true },
+  { id: "valentina", name: "Valentina Ríos", alias: "Vale.Rios", initials: "VR", bank: "Mercado Pago", color: "#f6eee5", recent: true },
   { id: "tomas", name: "Zaira Abril Mudry", alias: "NaviMemesina43", initials: "TP", bank: "Cooperativa Federal", color: "#f1edf7", recent: false },
   { id: "camila", name: "Alberto Gimenez Britez", alias: "Alberto.05", initials: "CA", bank: "Banco del Sur", color: "#edf2e8", recent: false },
 ];
 
 const destinationAccounts = [
-  { id: "digital", name: "Billetera digital", detail: "CVU ···· 4821", institution: "Libre Bank", mark: "LB" },
-  { id: "savings", name: "Cuenta de ahorro", detail: "CBU ···· 1906", institution: "Banco asociado", mark: "BA" },
+  { id: "digital", name: "Mercado Pago", detail: "Alias: Alberto.05", institution: " ", mark: "MP" },
+  { id: "savings", name: "Naranja Digital Compañia Financiera S.A.", detail: "Alias: alberto.32mp", institution: " ", mark: "NX" },
 ];
 
 const sourceAccounts = [
@@ -245,7 +245,7 @@ function accountTemplate() {
 
 function amountTemplate() {
   const amount = currentAmount();
-  const quickAmounts = [2500, 5000, 10000];
+  const quickAmounts = [5900, 10000, 11150];
   const keypadKeys = [
     ["1", ""], ["2", "ABC"], ["3", "DEF"],
     ["4", "GHI"], ["5", "JKL"], ["6", "MNO"],
@@ -254,13 +254,16 @@ function amountTemplate() {
   ];
   return `<section class="view flow-view amount-view">
     <div class="flow-toolbar"><button class="icon-button back-button" data-action="back" aria-label="Volver">${icon("arrowLeft")}</button><span></span></div>
-    <div class="amount-heading"><h1 class="flow-title">Definí el importe</h1></div>
-    <div class="recipient-card"><span class="contact-avatar" style="background:${state.recipient.color}">${state.recipient.initials}</span><div><strong>${state.recipient.name}</strong><span>Alias: ${state.recipient.alias}</span><button class="inline-action" data-action="toast" data-message="Motivo: Varios">Motivo: Varios ${icon("arrowRight")}</button></div></div>
+    <div class="amount-heading"><h1 class="flow-title">Ingresá el monto</h1></div>
+    <div class="amount-recipient">
+      <span class="amount-recipient-avatar"><img src="logo-libre-bank.png" alt=""></span>
+      <div class="amount-recipient-copy"><strong>${state.recipient.name}</strong><span>Alias: ${state.recipient.alias}</span><button class="inline-action" data-action="toast" data-message="Motivo: Varios">Motivo: Varios ${icon("arrowRight")}</button></div>
+    </div>
     <div class="amount-display" aria-live="polite"><span class="amount-currency">$</span><span class="amount-number">${amountDisplay()}</span><span class="amount-caret"></span></div>
-    <p class="available-balance">Disponible: <strong>$ ${money(sourceAccounts[state.sourceAccount].balance)}</strong></p>
+    <div class="available-balance"><span>Disponible: <strong>${state.showBalance ? `$ ${money(sourceAccounts[state.sourceAccount].balance)}` : "••••••"}</strong></span><button class="balance-visibility" data-action="toggle-balance" aria-label="${state.showBalance ? "Ocultar" : "Mostrar"} saldo">${icon(state.showBalance ? "eye" : "eyeOff")}</button></div>
     <div class="quick-amounts">${quickAmounts.map((value) => `<button class="quick-amount ${amount === value ? "active" : ""}" data-action="quick-amount" data-value="${value}">$ ${value.toLocaleString("es-AR")}</button>`).join("")}</div>
-    <button class="primary-button amount-continue" data-action="continue" ${amount <= 0 || amount > sourceAccounts[state.sourceAccount].balance ? "disabled" : ""} >Revisar envío ${icon("arrowRight")}</button>
-    <p class="disclaimer">Simulación educativa. No se realiza ningún movimiento de dinero.</p>
+    <button class="primary-button amount-continue" data-action="continue" ${amount <= 0 || amount > sourceAccounts[state.sourceAccount].balance ? "disabled" : ""} >Continuar</button>
+    
   </section>
   <div class="keypad" role="group" aria-label="Teclado numérico">
     <div class="keypad-grid">${keypadKeys.map(([key, letters]) => key === "backspace"
