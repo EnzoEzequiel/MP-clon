@@ -20,6 +20,7 @@ const state = {
   amountDigits: "",
   sourceAccount: 0,
   processing: false,
+  successPromoDismissed: false,
 };
 
 const contacts = [
@@ -108,9 +109,9 @@ function brandLockup() {
 function bottomNav() {
   const items = [
     ["home", "Inicio", "wallet"],
-    ["learn", "Aprender", "book"],
-    ["practice", "Practicar", "spark"],
-    ["progress", "Progreso", "chart"],
+    ["learn", "Tarjeta", "book"],
+    ["practice", "Qr", "spark"],
+    ["progress", "Servicios", "chart"],
     ["more", "Más", "grid"],
   ];
   return `<nav class="bottom-nav" aria-label="Navegación principal">
@@ -170,10 +171,6 @@ function homeTemplate() {
       <button class="credit-summary" data-action="toast" data-message="El detalle de tus créditos es demostrativo.">Consultá el detalle de tus créditos</button>
     </section>
 
-    <section class="section home-section home-benefits">
-      <div class="home-section-heading"><h2>Beneficios</h2><button class="text-link" data-action="toast" data-message="Sección de beneficios demostrativa.">Conocer todos ${icon("arrowRight")}</button></div>
-    </section>
-
     <section class="section">
       <div class="section-heading"><h2>Tu recorrido</h2><button class="text-link" data-action="nav" data-tab="progress">Ver progreso ${icon("arrowRight")}</button></div>
       <div class="progress-card">
@@ -182,12 +179,29 @@ function homeTemplate() {
       </div>
     </section>
 
-    <section class="section">
-      <div class="section-heading"><h2>Ideas para aprender</h2><button class="text-link" data-action="nav" data-tab="learn">Ver todas ${icon("arrowRight")}</button></div>
-      <div class="horizontal-cards">
-        <article class="learning-card"><div><span class="card-label">5 MIN · CONCEPTOS</span><p>Cómo ordenar tus gastos del mes</p></div><button data-action="lesson" data-lesson="gastos">Empezar ${icon("arrowRight")}</button><span class="card-decoration">01</span></article>
-        <article class="learning-card"><div><span class="card-label">8 MIN · AHORRO</span><p>Definí una meta que puedas sostener</p></div><button data-action="lesson" data-lesson="ahorro">Empezar ${icon("arrowRight")}</button><span class="card-decoration">02</span></article>
-        <article class="learning-card"><div><span class="card-label">6 MIN · SEGURIDAD</span><p>Reconocé señales de una estafa</p></div><button data-action="lesson" data-lesson="seguridad">Empezar ${icon("arrowRight")}</button><span class="card-decoration">03</span></article>
+    <section class="section benefits-section" aria-labelledby="benefits-title">
+      <div class="benefits-heading">
+        <h2 id="benefits-title">Beneficios</h2>
+        <button class="text-link" data-action="toast" data-message="Sección de beneficios demostrativa.">Conocer todos ${icon("arrowRight")}</button>
+      </div>
+      <div class="benefits-carousel" aria-label="Beneficios disponibles">
+        <article class="benefit-card benefit-card-cabify">
+          <div class="benefit-copy">
+            <p>50% OFF<br>en Cabify</p>
+            <button data-action="toast" data-message="Beneficio de Cabify demostrativo.">Usar beneficio ${icon("arrowRight")}</button>
+          </div>
+          <div class="benefit-photo">
+            <img src="beneficios.png" alt="Pasajera en un auto">
+            <span class="benefit-brand">cabify</span>
+          </div>
+        </article>
+        <article class="benefit-card benefit-card-ypf">
+          <div class="benefit-copy">
+            <span class="benefit-tag">Todos los lunes</span>
+            <p>10% de reintegro en YPF</p>
+            <button data-action="toast" data-message="Beneficio de YPF demostrativo.">Usar beneficio ${icon("arrowRight")}</button>
+          </div>
+        </article>
       </div>
     </section>
 
@@ -274,25 +288,25 @@ function amountTemplate() {
 
 function reviewTemplate() {
   const recipient = state.recipient;
-  const account = sourceAccounts[state.sourceAccount];
   const amount = currentAmount();
-  return `<section class="view flow-view">
-    ${toolbar()}
-    <h1 class="flow-title">Confirmá el detalle</h1>
-    <p class="flow-description">Repasá el destino y el importe antes de cerrar el ejercicio.</p>
-    <div class="review-recipient"><span class="contact-avatar" style="background:${recipient.color}">${recipient.initials}</span><div><strong>${recipient.name}</strong><span>Alias: ${recipient.alias} · ${recipient.bank}</span></div></div>
-    <div class="total-card"><span>Importe a simular</span><strong>$ ${money(amount, amount % 1 ? 2 : 0)}</strong></div>
-    <h2 class="list-label">Cuenta que envía</h2>
+  return `<section class="view flow-view review-view">
+    <div class="flow-toolbar review-toolbar"><button class="icon-button back-button" data-action="back" aria-label="Volver">${icon("arrowLeft")}</button></div>
+    <div class="review-recipient">
+      <span class="review-recipient-logo"><img src="logo-libre-bank.png" alt=""></span>
+      <div><strong>${recipient.name}</strong><span>Alias: ${recipient.alias}</span></div>
+    </div>
+    <div class="review-summary-spacer" aria-hidden="true"></div>
+    <div class="total-card"><span>Total</span><strong>$ ${money(amount, amount % 1 ? 2 : 0)}</strong></div>
     <div class="source-carousel">
-      ${sourceAccounts.map((source, index) => `<button class="source-card ${index === state.sourceAccount ? "selected" : ""} ${index ? "secondary-source" : ""}" data-action="source-account" data-index="${index}" aria-pressed="${index === state.sourceAccount}">
-        <span class="source-card-top"><span class="source-card-logo">LB</span><span class="source-card-balance">$ ${money(source.balance)}</span></span>
-        <span><p class="source-card-name">${source.name}</p><p class="source-card-caption">${source.number}</p></span>
-        <span class="source-card-chip">${source.label}</span>
+      ${sourceAccounts.map((source, index) => `<button class="source-card ${index === state.sourceAccount ? "selected" : ""} ${index ? "secondary-source" : ""}" data-action="source-account" data-index="${index}" aria-label="Seleccionar ${source.name}, saldo ${state.showBalance ? `$ ${money(source.balance)}` : "oculto"}" aria-pressed="${index === state.sourceAccount}">
+        <span class="source-card-top"><span class="source-card-logo"><img src="logo-libre-bank.png" alt=""></span><span class="source-card-balance">${state.showBalance ? `$ ${money(source.balance)}` : "••••••"}${icon(state.showBalance ? "eye" : "eyeOff")}</span></span>
+        <span class="source-card-watermark" aria-hidden="true"><span>MERCADO</span><span>PAGO</span></span>
+        <span class="source-card-chip">DINERO DISPONIBLE</span>
+        <span class="source-card-footer">Sin comisión</span>
       </button>`).join("")}
     </div>
-    <div class="total-card"><span>Destino</span><strong style="font-size:14px;letter-spacing:0">${state.destinationAccount.name}</strong></div>
-    <p class="disclaimer">Esta pantalla es demostrativa. No se debita saldo ni se contacta a ninguna entidad financiera.</p>
-    <button class="primary-button" data-action="confirm">Simular envío ${icon("arrowRight")}</button>
+    <div class="source-pagination" aria-hidden="true">${sourceAccounts.map((source, index) => `<span class="source-pagination-dot ${index === state.sourceAccount ? "active" : ""}"></span>`).join("")}</div>
+    <button class="primary-button review-continue" data-action="confirm">Transferir</button>
   </section>`;
 }
 
@@ -303,15 +317,25 @@ function successTemplate() {
     <div class="success-close"><button class="icon-button" data-action="home" aria-label="Cerrar">${icon("close")}</button></div>
     <div class="success-content">
       <div class="success-mark">${icon("check")}</div>
-      <h1>Práctica completada</h1>
-      <p>Simulaste un envío de <strong>$ ${money(amount, amount % 1 ? 2 : 0)}</strong>. No se movió dinero real.</p>
-      <div class="success-details"><span class="contact-avatar" style="background:${recipient.color}">${recipient.initials}</span><div><strong>${recipient.name}</strong><span>${recipient.alias} · ${state.destinationAccount.name}</span></div></div>
-      <p style="margin:16px 0 0;font-size:11px;">Origen: ${sourceAccounts[state.sourceAccount].name} · Comprobante educativo LB-2048</p>
+      <h1>Transferiste $ ${money(amount, amount % 1 ? 2 : 0)}</h1>
+      <div class="success-details">
+        <span class="success-recipient-logo"><img src="logo-libre-bank.png" alt=""></span>
+        <div><strong>${recipient.name}</strong><span>Alias: ${recipient.alias}</span><span>${state.destinationAccount.name}</span></div>
+      </div>
+      ${state.successPromoDismissed ? "" : `<aside class="success-promo">
+        <div class="success-promo-copy">
+          <span class="success-promo-label">Seguro de Cuenta</span>
+          <p>Recuperá tu dinero si se dañan o te roban tus compras con Mercado Pago</p>
+          <button class="success-promo-link" data-action="toast" data-message="Información educativa sobre Seguro de Cuenta.">Conocer ${icon("arrowRight")}</button>
+        </div>
+        <div class="success-promo-art" aria-hidden="true"><span class="success-shield">${icon("check")}</span></div>
+        <button class="success-promo-close" data-action="dismiss-success-promo" aria-label="Cerrar promoción">${icon("close")}</button>
+      </aside>`}
     </div>
     <div class="success-spacer"></div>
     <div class="success-actions">
-      <button class="primary-button" data-action="receipt">${icon("copy")} Copiar constancia</button>
-      <button class="secondary-button" data-action="home">Ir al panel principal</button>
+      <button class="primary-button" data-action="receipt">${icon("share")} Compartir comprobante</button>
+      <button class="secondary-button" data-action="new-transfer">Hacer otra transferencia</button>
     </div>
   </section>`;
 }
@@ -362,6 +386,10 @@ function render({ keepFocus = false } = {}) {
     : (templates[state.screen] || homeTemplate)();
   const view = $(".view", root);
   if (view && state.direction === "back") view.classList.add("is-back");
+  if (state.screen === "review") {
+    const selectedSource = $(".source-card.selected", root);
+    if (selectedSource) selectedSource.scrollIntoView({ block: "nearest", inline: "center" });
+  }
   if (state.screen === "transfer" && keepFocus) {
     const input = $("#recipient-search", root);
     if (input) { input.focus(); input.setSelectionRange(input.value.length, input.value.length); }
@@ -435,10 +463,11 @@ function showReview() {
 function confirmPractice() {
   if (state.processing) return;
   state.processing = true;
+  state.successPromoDismissed = false;
   const button = $("[data-action='confirm']", root);
   if (button) {
     button.disabled = true;
-    button.textContent = "Preparando práctica…";
+    button.textContent = "Transfiriendo";
   }
   setTimeout(() => {
     state.processing = false;
@@ -531,13 +560,36 @@ root.addEventListener("click", async (event) => {
       state.activeTab = "home";
       navigate("home", { replace: true, direction: "back" });
       break;
+    case "new-transfer":
+      state.history = [];
+      state.activeTab = "home";
+      state.search = "";
+      state.recipient = null;
+      state.destinationAccount = null;
+      state.amountDigits = "";
+      state.sourceAccount = 0;
+      navigate("transfer", { replace: true });
+      break;
+    case "dismiss-success-promo":
+      state.successPromoDismissed = true;
+      render();
+      break;
     case "receipt": {
-      const text = `Libre Bank · Resumen educativo\nImporte simulado: $ ${money(currentAmount(), currentAmount() % 1 ? 2 : 0)}\nDestino: ${state.recipient.name}\nNo se movió dinero real.`;
+      const text = `Libre Bank · Resumen educativo\nImporte simulado: $ ${money(currentAmount(), currentAmount() % 1 ? 2 : 0)}\nDestino: ${state.recipient.name}\nOrigen: ${sourceAccounts[state.sourceAccount].name}\nNo se movió dinero real.`;
+      if (typeof navigator.share === "function") {
+        try {
+          await navigator.share({ title: "Comprobante educativo", text });
+          showToast("Comprobante compartido.");
+          break;
+        } catch (error) {
+          if (error && error.name === "AbortError") break;
+        }
+      }
       try {
         await navigator.clipboard.writeText(text);
         showToast("Resumen copiado.");
       } catch {
-        showToast("El resumen está listo; el navegador no permitió copiarlo.");
+        showToast("No se pudo compartir ni copiar el comprobante.");
       }
       break;
     }
