@@ -96,6 +96,24 @@ function amountDisplay() {
   return decimal !== undefined ? `${formattedInteger},${decimal}` : formattedInteger;
 }
 
+function updateAmountScreen() {
+  const display = $(".amount-number", root);
+  const displayContainer = $(".amount-display", root);
+  if (!display || !displayContainer) return;
+
+  display.textContent = amountDisplay();
+  displayContainer.classList.toggle("is-placeholder", state.amountDigits.length === 0);
+
+  const amount = currentAmount();
+  const continueButton = $(".amount-continue", root);
+  if (continueButton) {
+    continueButton.disabled = amount <= 0 || amount > sourceAccounts[state.sourceAccount].balance;
+  }
+  root.querySelectorAll(".quick-amount").forEach((button) => {
+    button.classList.toggle("active", amount === Number(button.dataset.value));
+  });
+}
+
 function escapeHTML(value) {
   return String(value).replace(/[&<>"']/g, (char) => ({
     "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;",
@@ -273,7 +291,7 @@ function amountTemplate() {
       <span class="amount-recipient-avatar"><img src="logo-libre-bank.png" alt=""></span>
       <div class="amount-recipient-copy"><strong>${state.recipient.name}</strong><span>Alias: ${state.recipient.alias}</span><button class="inline-action" data-action="toast" data-message="Motivo: Varios">Motivo: Varios ${icon("arrowRight")}</button></div>
     </div>
-    <div class="amount-display" aria-live="polite"><span class="amount-currency">$</span><span class="amount-number">${amountDisplay()}</span><span class="amount-caret"></span></div>
+    <div class="amount-display ${state.amountDigits ? "" : "is-placeholder"}" aria-live="polite"><span class="amount-currency">$</span><span class="amount-number">${amountDisplay()}</span><span class="amount-caret"></span></div>
     <div class="available-balance"><span>Disponible: <strong>${state.showBalance ? `$ ${money(sourceAccounts[state.sourceAccount].balance)}` : "••••••"}</strong></span><button class="balance-visibility" data-action="toggle-balance" aria-label="${state.showBalance ? "Ocultar" : "Mostrar"} saldo">${icon(state.showBalance ? "eye" : "eyeOff")}</button></div>
     <div class="quick-amounts">${quickAmounts.map((value) => `<button class="quick-amount ${amount === value ? "active" : ""}" data-action="quick-amount" data-value="${value}">$ ${value.toLocaleString("es-AR")}</button>`).join("")}</div>
     <button class="primary-button amount-continue" data-action="continue" ${amount <= 0 || amount > sourceAccounts[state.sourceAccount].balance ? "disabled" : ""} >Continuar</button>
@@ -447,7 +465,7 @@ function appendKey(key) {
       state.amountDigits = `${digits}${key}`.replace(/^0+(?=\d)/, "");
     }
   }
-  render();
+  updateAmountScreen();
 }
 
 function showReview() {
@@ -540,7 +558,7 @@ root.addEventListener("click", async (event) => {
       break;
     case "quick-amount":
       state.amountDigits = String(target.dataset.value);
-      render();
+      updateAmountScreen();
       break;
     case "continue":
       showReview();
