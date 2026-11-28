@@ -24,11 +24,11 @@ const state = {
 };
 
 const contacts = [
-  { id: "sofia", name: "Sofía Almirón", alias: "Sofi.Almiron", initials: "SA", bank: "Mercado Pago", color: "#e6f3ed", recent: true },
-  { id: "mateo", name: "Mateo Benítez", alias: "Mateo.Benitez", initials: "MB", bank: "Banco del Sur", color: "#eaf0f7", recent: true },
+  { id: "sofia", name: "Erica Gisele Meacci", alias: "erica.dalma2010", initials: "EM", bank: "Mercado Pago", color: "#e6f3ed", recent: true },
+  { id: "mateo", name: "Mateo Benítez", alias: "Mateo.Benitez", initials: "AB", bank: "Banco del Sur", color: "#eaf0f7", recent: true },
   { id: "valentina", name: "Valentina Ríos", alias: "Vale.Rios", initials: "VR", bank: "Mercado Pago", color: "#f6eee5", recent: true },
   { id: "tomas", name: "Zaira Abril Mudry", alias: "NaviMemesina43", initials: "TP", bank: "Cooperativa Federal", color: "#f1edf7", recent: false },
-  { id: "camila", name: "Alberto Gimenez Britez", alias: "Alberto.05", initials: "CA", bank: "Banco del Sur", color: "#edf2e8", recent: false },
+  { id: "camila", name: "Alberto Gimenez Britez", alias: "Alberto.05", initials: "AB", bank: "Banco del Sur", color: "#edf2e8", recent: false },
 ];
 
 const destinationAccounts = [
