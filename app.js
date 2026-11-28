@@ -24,7 +24,7 @@ const state = {
 };
 
 const contacts = [
-  { id: "sofia", name: "Erica Gisele Meacci", alias: "erica.dalma2010", initials: "EM", bank: "Mercado Pago", color: "#e6f3ed", recent: true },
+  { id: "sofia", name: "Erica Gisele Meacci", alias: "erica.dalma2010", initials: "EM", bank: "Mercado Pago", color: "#e6f3ed", recent: true, destinationAccountIds: ["digital"] },
   { id: "mateo", name: "Mateo Benítez", alias: "Mateo.Benitez", initials: "AB", bank: "Banco del Sur", color: "#eaf0f7", recent: true },
   { id: "valentina", name: "Valentina Ríos", alias: "Vale.Rios", initials: "VR", bank: "Mercado Pago", color: "#f6eee5", recent: true },
   { id: "tomas", name: "Zaira Abril Mudry", alias: "NaviMemesina43", initials: "TP", bank: "Cooperativa Federal", color: "#f1edf7", recent: false },
@@ -32,8 +32,8 @@ const contacts = [
 ];
 
 const destinationAccounts = [
-  { id: "digital", name: "Mercado Pago", detail: "Alias: Alberto.05", institution: " ", mark: "MP" },
-  { id: "savings", name: "Naranja Digital Compañia Financiera S.A.", detail: "Alias: alberto.32mp", institution: " ", mark: "NX" },
+  { id: "digital", name: "Mercado Pago", institution: " ", mark: "MP" },
+  { id: "savings", name: "Naranja Digital Compañia Financiera S.A.", institution: " ", mark: "NX" },
 ];
 
 const sourceAccounts = [
@@ -265,12 +265,15 @@ function transferTemplate() {
 
 function accountTemplate() {
   const recipient = state.recipient;
+  const accounts = recipient.destinationAccountIds
+    ? destinationAccounts.filter((account) => recipient.destinationAccountIds.includes(account.id))
+    : destinationAccounts;
   return `<section class="view flow-view account-view">
     <div class="flow-toolbar"><button class="icon-button back-button" data-action="back" aria-label="Volver">${icon("arrowLeft")}</button></div>
     <h1 class="flow-title">Elegí la cuenta</h1>
     <div class="account-recipient"><strong>${recipient.name}</strong><span>CUIT: 20-22710277-3</span></div>
     <div class="account-list">
-      ${destinationAccounts.map((account) => `<button class="account-row" data-action="select-account" data-id="${account.id}"><span class="account-mark">${account.mark}</span><span class="account-copy"><strong>${account.name}</strong><span>${account.institution} · ${account.detail}</span></span>${icon("chevron", "chevron")}</button>`).join("")}
+      ${accounts.map((account) => `<button class="account-row" data-action="select-account" data-id="${account.id}"><span class="account-mark">${account.mark}</span><span class="account-copy"><strong>${account.name}</strong><span>${account.institution} · Alias: ${recipient.alias}</span></span>${icon("chevron", "chevron")}</button>`).join("")}
     </div>
   </section>`;
 }
