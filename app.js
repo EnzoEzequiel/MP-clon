@@ -21,6 +21,7 @@ const state = {
   sourceAccount: 0,
   processing: false,
   successPromoDismissed: false,
+  successAudioAttempted: false,
 };
 
 const contacts = [
@@ -335,6 +336,7 @@ function successTemplate() {
   const recipient = state.recipient;
   const amount = currentAmount();
   return `<section class="view success-view">
+    <audio id="success-audio" preload="auto" src="success-audio.mpeg"></audio>
     <div class="success-close"><button class="icon-button" data-action="home" aria-label="Cerrar">${icon("close")}</button></div>
     <div class="success-content">
       <div class="success-mark">${icon("check")}</div>
@@ -411,10 +413,24 @@ function render({ keepFocus = false } = {}) {
     const selectedSource = $(".source-card.selected", root);
     if (selectedSource) selectedSource.scrollIntoView({ block: "nearest", inline: "center" });
   }
+  if (state.screen === "success") playSuccessAudio();
   if (state.screen === "transfer" && keepFocus) {
     const input = $("#recipient-search", root);
     if (input) { input.focus(); input.setSelectionRange(input.value.length, input.value.length); }
   }
+}
+
+function playSuccessAudio() {
+  if (state.successAudioAttempted) return;
+  const audio = $("#success-audio", root);
+  if (!audio) return;
+
+  state.successAudioAttempted = true;
+  audio.play().catch((error) => {
+    showToast(error && error.name === "NotAllowedError"
+      ? "El navegador bloqueó la reproducción automática del audio."
+      : "No se pudo cargar el audio de confirmación.");
+  });
 }
 
 function navigate(screen, { replace = false, direction = "forward" } = {}) {
@@ -485,6 +501,7 @@ function confirmPractice() {
   if (state.processing) return;
   state.processing = true;
   state.successPromoDismissed = false;
+  state.successAudioAttempted = false;
   const button = $("[data-action='confirm']", root);
   if (button) {
     button.disabled = true;
